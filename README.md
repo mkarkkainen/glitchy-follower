@@ -1,4 +1,4 @@
-# Interactive SVG Blob
+# Glitchy SVG Blob
 
 This project creates an interactive SVG blob with animation, a background blur effect, and a following behavior where the blob moves with the pointer.
 
