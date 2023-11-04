@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive SVG Blob</title>
+  <style>
+    <svg style="display: none;">
+      <defs>
+        <filter id="blur">
+          <feGaussianBlur stdDeviation="1">
+            <animate
+              attributeName="stdDeviation"
+              values="0;5;0"
+              dur="30ms"
+              repeatCount="indefinite"
+            />
+          </feGaussianBlur>
+        </filter>
+        <filter id="noise">
+          <feTurbulence type="fractalNoise" baseFrequency="0.7" seed="0" result="static">
+            <animate attributeName="seed" values="0;40;0" dur="500ms" repeatCount="indefinite" />
+          </feTurbulence>
+          <feDisplacementMap in="SourceGraphic" in2="static" scale="0">
+            <animate attributeName="scale" values="0;10;0" dur="500ms" repeatCount="indefinite" />
+          </feDisplacementMap>
+        </filter>
+      </defs>
+    </svg>
+
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @keyframes rotate {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes pan-image {
+      0% {
+        background-position: 36% 42%;
+        background-size: 200%;
+      }
+
+      20% {
+        background-position: 30% 35%;
+        background-size: 200%;
+      }
+
+      20.0001% {
+        background-position: 60% 85%;
+        background-size: 500%;
+      }
+
+      40% {
+        background-position: 49% 81%;
+        background-size: 500%;
+      }
+
+      40.0001% {
+        background-position: 80% 42%;
+        background-size: 300%;
+      }
+
+      60% {
+        background-position: 84% 33%;
+        background-size: 300%;
+      }
+
+      60.0001% {
+        background-position: 0% 0%;
+        background-size: 300%;
+      }
+
+      80% {
+        background-position: 15% 4%;
+        background-size: 300%;
+      }
+
+      80.0001% {
+        background-position: 80% 10%;
+        background-size: 300%;
+      }
+
+      100% {
+        background-position: 72% 14%;
+        background-size: 300%;
+      }
+    }
+
+    #blob {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      aspect-ratio: 1;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      overflow: hidden;
+      animation: rotate 10s infinite;
+    }
+
+    #blob > img {
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      z-index: 1;
+      left: 0px;
+      top: 0px;
+      filter: url(#noise) url(#blur);
+      background-size: 300%;
+      background-position: 0% 0%;
+      animation: pan-image 10s linear infinite;
+    }
+  </style>
+</head>
+<body>
+  <div id="blob">
+    <img src="https://plus.unsplash.com/premium_photo-1668790939880-175008e583db?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1011&q=80" />
+  </div>
+  <script>
+    const blob = document.getElementById("blob");
+
+    window.onpointermove = event => {
+      const { clientX, clientY } = event;
+
+      blob.animate({ left: `${clientX}px`, top: `${clientY}px` }, { duration: 3000, fill: "forwards" });
+    }
+  </script>
+</body>
+</html>
+
